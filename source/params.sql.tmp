@@ -1,0 +1,11 @@
+
+                                                                                
+                                                                                
+
+Creating utPLSQL user UT3
+create user UT3 identified by XNtxj8eEgA6X6b6f default tablespace users quota unlimited on users
+            *
+ERROR at line 1:
+ORA-01920: user name 'UT3' conflicts with another user or role name 
+
+
