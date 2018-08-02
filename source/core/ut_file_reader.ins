@@ -1,0 +1,119 @@
+CREATE OR REPLACE AND COMPILE JAVA SOURCE NAMED "FileReading" AS
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.util.Scanner;
+import java.sql.Date;
+import java.text.DecimalFormat;
+import java.text.Format;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import oracle.jdbc.OracleDriver;
+import oracle.sql.ArrayDescriptor;
+
+public class FileReading {
+
+   private static String dateFormat = "yyyy-MM-dd HH:mm:ss";
+   
+   public static String existFile(String dir, String fileName) throws Exception { 
+      String output = "";
+      System.out.println("FileReading" + ".exists " + dir + File.separatorChar + fileName);
+      if ((new File(dir + File.separatorChar + fileName)).exists()){
+         output = getFile(dir+ File.separatorChar +fileName);
+      }else{
+         output = "Couldn't find the file";
+      }
+      return output;
+      }
+      
+   private static String rPad(String s, int l) {
+      StringBuffer sb = new StringBuffer(s);
+      while ( sb.length() < l )
+         sb.append(" ");
+      return sb.toString();
+   }
+
+   private static String lPad(String s, int l) {
+      StringBuffer sb = new StringBuffer();
+      while ( sb.length() < (l - s.length()) )
+         sb.append(" ");
+      sb.append(s);
+      return sb.toString();
+   }
+      
+   private static String numFormat(long n) {
+      if ( n == 0 ) return "0";
+      if ( n/1024 < 1 ) return "1";
+      NumberFormat formatter = new DecimalFormat("#,###,###,###");
+      return formatter.format(n/1024);
+   }
+      
+   public static oracle.sql.ARRAY getFileList(String startDir) throws Exception {
+      System.out.println("FileReading" + ".getFileList " + startDir);
+
+      String[] listOfDirectories = null;
+      String[] listOfFiles       = null;
+      String[] listOfAll         = null;
+
+      File dir = new File(startDir);
+
+      FileFilter directoryFilter = new FileFilter() {
+         public boolean accept(File file) {
+            return file.isDirectory();
+         }
+      };
+      File[] files = dir.listFiles(directoryFilter);
+
+      if ( files != null ) {
+         listOfDirectories = new String[files.length];      
+         for (int i = 0; i < files.length; i++) {
+            Format formatter = new SimpleDateFormat(dateFormat);
+            String s = formatter.format(new Date(files[i].lastModified()));
+            listOfDirectories[i] = s + rPad(lPad("<DIR>",15),19) + files[i].getName();
+         }
+      }
+
+      FileFilter fileFilter = new FileFilter() {
+         public boolean accept(File file) {
+            return !file.isDirectory();
+         }
+      };
+
+      files = dir.listFiles(fileFilter);
+
+      if ( files != null ) {
+         listOfFiles = new String[files.length];      
+         for (int i = 0; i < files.length; i++) {
+            Format formatter = new SimpleDateFormat(dateFormat);
+            String s = formatter.format(new Date(files[i].lastModified()));
+            listOfFiles[i] = s + rPad(lPad("" + numFormat(files[i].length()) + " KB",15),19) + files[i].getName();
+         }
+      }
+      listOfAll = new String[listOfDirectories.length + listOfFiles.length + 1];
+            
+      listOfAll[0] = "Directory of " + startDir;
+      for (int i = 0; i < listOfDirectories.length; i++)
+         listOfAll[i + 1] = listOfDirectories[i];
+      for (int i = 0; i < listOfFiles.length; i++)
+         listOfAll[i + listOfDirectories.length + 1] = listOfFiles[i];
+
+      Connection      c = new OracleDriver().defaultConnection();
+      ArrayDescriptor d = ArrayDescriptor.createDescriptor("t_f_array", c);
+      return new oracle.sql.ARRAY(d, c, listOfAll);
+   } 
+   
+   private static String getFile(String fileName) throws IOException{
+      File file = new File(fileName);
+      Scanner sc = new Scanner(file);
+      String result = " ";
+      while (sc.hasNextLine()){
+         result += "\n"+sc.nextLine();
+      }
+      System.out.println(result);
+      return result;
+   } 
+};
+/
+
+show errors java source "FileReading"

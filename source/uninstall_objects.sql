@@ -57,6 +57,10 @@ drop package ut_suite_builder;
 
 drop package ut;
 
+drop package ut_file_reader;
+
+drop type f_t_array force;
+
 drop table ut_dbms_output_cache;
 
 drop type ut_expectation_compound force;

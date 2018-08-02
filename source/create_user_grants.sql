@@ -110,6 +110,8 @@ grant execute on &&ut3_owner..ut_annotation_cache_manager to &ut3_user;
 grant execute on &&ut3_owner..ut_annotation_parser to &ut3_user;
 grant execute on &&ut3_owner..ut_annotation_objs_cache_info to &ut3_user;
 grant execute on &&ut3_owner..ut_annotation_obj_cache_info to &ut3_user;
+grant execute on &&ut3_owner..ut_file_reader to &ut3_user;
+
 begin
   $if dbms_db_version.version = 12 and dbms_db_version.release >= 2 or dbms_db_version.version > 12 $then
   execute immediate 'grant select, insert, delete, update on &&ut3_owner..dbmspcc_blocks to &ut3_user';

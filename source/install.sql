@@ -37,6 +37,7 @@ alter session set current_schema = &&ut3_owner;
 --dbms_output buffer cache table
 @@install_component.sql 'core/ut_dbms_output_cache.sql'
 
+
 --common utilities
 @@install_component.sql 'core/types/ut_varchar2_list.tps'
 @@install_component.sql 'core/types/ut_varchar2_rows.tps'
@@ -46,6 +47,10 @@ alter session set current_schema = &&ut3_owner;
 @@install_component.sql 'core/types/ut_object_names.tps'
 @@install_component.sql 'core/types/ut_key_value_pair.tps'
 @@install_component.sql 'core/types/ut_key_value_pairs.tps'
+@@install_component.sql 'core/types/ut_file_reader_array.tps'
+@@install_component.sql 'core/ut_file_reader.pks'
+@@install_component.sql 'core/ut_file_reader.pkb'
+@@install_component.sql 'core/ut_file_reader.ins'
 @@install_component.sql 'core/ut_utils.pks'
 @@install_component.sql 'core/ut_metadata.pks'
 @@install_component.sql 'core/ut_utils.pkb'
@@ -78,6 +83,7 @@ alter session set current_schema = &&ut3_owner;
 @@install_component.sql 'core/types/ut_run.tps'
 @@install_component.sql 'core/types/ut_reporter_base.tps'
 @@install_component.sql 'core/types/ut_reporters.tps'
+
 
 --output buffer base api
 @@install_component.sql 'core/output_buffers/ut_output_buffer_base.tps'
