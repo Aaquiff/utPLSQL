@@ -59,7 +59,9 @@ drop package ut;
 
 drop package ut_file_reader;
 
-drop type f_t_array force;
+drop java source "FileReading";
+
+drop type t_f_array force;
 
 drop table ut_dbms_output_cache;
 
