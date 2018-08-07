@@ -11,7 +11,8 @@ pipeline {
         }
         stage('test') {
             steps {
-                dir('C:\\utPLSQL-cli\\bin') {
+                script {
+                    //utPLSQL-cli should be in the path variable
                     bat 'utplsql run ifsapp/ifsapp@cmbrndsb3812:1521/pdb1 -f=UT_JUNIT_REPORTER -o=result.xml'
                 }
             }
