@@ -11,7 +11,8 @@ pipeline {
         }
         stage('test') {
             steps {
-                dir('C:\\utPLSQL-cli\\bin') {
+                script {
+                    //utPLSQL-cli should be in the path variable
                     bat 'utplsql run ifsapp/ifsapp@cmbrndsb3812:1521/pdb1 -f=UT_JUNIT_REPORTER -o=result.xml'
                 }
             }
@@ -20,6 +21,7 @@ pipeline {
             steps {
                 dir('source') {
                     bat 'sqlplus sys/Manager_1@cmbrndsb3812/pdb1 as sysdba @uninstall_all.sql UT3'
+                    bat 'sqlplus sys/Manager_1@cmbrndsb3812/pdb1 as sysdba @drop_user_cascade.sql'
                 }
             }
         }
