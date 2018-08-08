@@ -5,21 +5,21 @@ pipeline {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/develop']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/Aaquiff/utPLSQL.git']]])
                 dir('source') {
-                    bat 'sqlplus sys/Manager_1@cmbrndsb3812/pdb1 as sysdba @install_headless.sql'
+                    bat 'sqlplus sys/Manager_1@cmbrndsb3812/sb as sysdba @install_headless.sql'
                 }
             }
         }
         stage('test') {
             steps {
                 dir('utPLSQL-cli/bin'){
-                    bat 'utplsql run ifsapp/ifsapp@cmbrndsb3812:1521/pdb1 -f=UT_JUNIT_REPORTER -o=result.xml'
+                    bat 'utplsql run ifsapp/ifsapp@cmbrndsb3812:1521/sb -f=UT_JUNIT_REPORTER -o=result.xml'
                 }
             }
         }
         stage('Uninstall') {
             steps {
                 dir('source') {
-                    bat 'sqlplus sys/Manager_1@cmbrndsb3812/pdb1 as sysdba @uninstall_all.sql UT3'
+                    bat 'sqlplus sys/Manager_1@cmbrndsb3812/sb as sysdba @uninstall_all.sql UT3'
                 }
             }
         }
