@@ -32,6 +32,8 @@ alter session set current_schema = &&ut3_owner;
 
 @@uninstall_synonyms.sql
 
+@@drop_user.sql
+
 begin
   dbms_output.put_line('&&line_separator');
   dbms_output.put_line('Uninstall complete');
