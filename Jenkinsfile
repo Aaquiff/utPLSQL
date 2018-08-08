@@ -21,11 +21,10 @@ pipeline {
             steps {
                 dir('source') {
                     bat 'sqlplus sys/Manager_1@cmbrndsb3812/pdb1 as sysdba @uninstall_all.sql UT3'
-                    bat 'sqlplus sys/Manager_1@cmbrndsb3812/pdb1 as sysdba @drop_user_cascade.sql'
                 }
             }
         }
-        stage('CLean Workspace'){
+        stage('Clean Workspace'){
             steps{
                 deleteDir()           
             }
