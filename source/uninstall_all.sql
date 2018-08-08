@@ -32,7 +32,7 @@ alter session set current_schema = &&ut3_owner;
 
 @@uninstall_synonyms.sql
 
-@@drop_user.sql
+@@drop_user_cascade.sql
 
 begin
   dbms_output.put_line('&&line_separator');
